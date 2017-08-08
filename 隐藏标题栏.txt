@@ -1,0 +1,23 @@
+1.将AppCompatActivity改为Activity，此时 requestWindowFeature(Window.FEATURE_NO_TITLE);是有效的
+
+
+2、if (getSupportActionBar() != null){
+   getSupportActionBar().hide();
+}
+
+
+// 手动在oncreate里hide()actionbar
+if (getSupportActionBar() != null){
+   getSupportActionBar().hide();
+}
+// 第二种最简单 直接用supportrequestwindowFeature好了：
+supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+// 第三种 直接修改style 缺点 直接全局了（注意继承）
+<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>

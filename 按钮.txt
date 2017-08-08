@@ -1,0 +1,143 @@
+为按钮增加单击事件的响应时有两种方式：
+1、通过Button的setOnClickListener方法为该按钮绑定一个单击事件监听器，用于监听用户的单击事件。代码如下： 
+public class MyActivity extends Activity {
+     protected void onCreate(Bundle icicle) {
+         super.onCreate(icicle);
+
+         setContentView(R.layout.content_layout_id);
+
+         //手工增加代码开始
+         //将按钮绑定一个单操作的事件监听器。用于监听用户的单击操作。
+         final Button button = (Button) findViewById(R.id.button_id);
+         button.setOnClickListener(new View.OnClickListener() {
+             public void onClick(View v) {
+                 // Perform action on click
+                 //增加自己的代码......
+                 final TextView text = (TextView) findViewById(R.id.textView1);
+                 text.setText("OnClick. " + " ....");	
+             }
+         });
+         //手工增加代码结束
+     }
+ }
+
+
+上面的代码很简短，但不利于阅读。也可以使用下面的书写方式：
+ public class MyActivity extends Activity {
+
+     protected void onCreate(Bundle icicle) {
+         super.onCreate(icicle);
+
+         setContentView(R.layout.content_layout_id);
+
+         //手动增加代码开始
+         Button button = (Button) findViewById(R.id.button_id);
+         button.setOnClickListener(myOnClickListener);
+         //手动增加代码结束
+     }
+
+    //手动增加代码开始
+    private OnClickListener myOnClickListener = new OnClickListener() {
+        public void onClick(View v) {
+        //增加自己的代码......
+        final TextView text = (TextView) findViewById(R.id.textView1);
+        text.setText("OnClick. " + " ....");	           
+        }       
+    };
+    //手动增加代码结束
+ }
+
+
+2、通过修改main.xml中Button的属性，为按钮增加单击事件请求。修改的xml文件如下：
+public class HelloAndroidActivity extends Activity {
+    /** Called when the activity is first created. */	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main); 
+        
+    }
+    
+    /* ************************************
+     *   按钮的单击操作处理函数。
+     *   下面的函数是一个按钮单击的处理函数。
+     *   它需要在layout的xml中将按钮增加一个OnClick的属性，
+     *   并指定它的处理函数。如下
+     *  
+     *   android:onClick="OnMySelfClick"
+     *   
+     *   这样的话，就不用再增加上面那些复杂的代码了。
+     *   
+     * */
+    public void OnMySelfClick(View v)
+    {
+		final TextView text = (TextView) findViewById(R.id.textView1);
+		text.setText("OnMySelfClick. " + " ....");    
+    }
+}
+
+
+3  多个按钮点击事件的处理，以指定onClick属性方式为例
+<Button
+        android:id="@+id/bt1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="click"
+        android:text="点击事件1" />
+    
+       <Button
+        android:id="@+id/bt2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="click"
+        android:text="点击事件2" />
+     
+       <Button
+        android:id="@+id/bt3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="click"
+        android:text="点击事件3" />/>
+    
+    <Button
+        android:id="@+id/bt4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="click"
+        android:text="点击事件4" />
+
+public class MainActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+    }
+
+    //指定onClick属性方式
+    //传人的View对象，就是用户按下的那个按钮对象
+    public void click(View v) {
+        // TODO Auto-generated method stub
+        
+        //获取组件的资源id
+        int id = v.getId();
+        switch (id) {
+        case R.id.bt1:
+            Log.i("指定onClick属性方式","bt1点击事件"); 
+            break;
+        case R.id.bt2:
+            Log.i("指定onClick属性方式","bt2点击事件"); 
+            break;
+        case R.id.bt3:
+            Log.i("指定onClick属性方式","bt3点击事件"); 
+            break;
+        case R.id.bt4:
+            Log.i("指定onClick属性方式","bt4点击事件"); 
+            break;
+
+        default:
+            break;
+        }        
+    }
+}

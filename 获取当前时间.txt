@@ -1,0 +1,96 @@
+1、、、、、、、、、、、
+
+import   java.text.SimpleDateFormat;      
+  SimpleDateFormat   formatter   =   new   SimpleDateFormat   ("yyyy年MM月dd日   HH:mm:ss");     
+  Date curDate =  new Date(System.currentTimeMillis());  
+//获取当前时间
+String   str   =   formatter.format(curDate);
+2、、、、、、、、、、、、、
+
+ Time time = new Time("GMT+8");     
+        time.setToNow();    
+        int year = time.year;    
+        int month = time.month;    
+        int day = time.monthDay;    
+        int minute = time.minute;    
+        int hour = time.hour;    
+        int sec = time.second;    
+        myTextView.setText("当前时间为：" + year +     
+                            "年 " + month +     
+                            "月 " + day +     
+                            "日 " + hour +     
+                            "时 " + minute +     
+                            "分 " + sec +     
+                            "秒");    
+
+
+1111111111111111111111111111111111
+import java.text.SimpleDateFormat;
+
+SimpleDateFormat formatter = new SimpleDateFormat ("yyyy年MM月dd日 HH:mm:ss ");
+Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+String str = formatter.format(curDate);
+
+SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+String date = sDateFormat.format(new java.util.Date());
+
+SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM");
+String date=sdf.format(new java.util.Date());
+
+df=DateFormat.getDateTimeInstance(DateFormat.FULL,DateFormat.FULL,Locale.CHINA);
+System.out.println(df.format(new Date()));
+
+ContentResolver cv = this.getContentResolver();　　
+　　String strTimeFormat = android.provider.Settings.System.getString(cv,
+　　android.provider.Settings.System.TIME_12_24);
+　　if(strTimeFormat.equals("24"))
+　　{
+　　Log.i("activity","24");
+　　}
+
+Time t=new Time(); // or Time t=new Time("GMT+8"); 加上Time Zone资料。
+　　t.setToNow(); // 取得系统时间。
+　　int year = t.year;
+　　int month = t.month;
+　　int date = t.monthDay;
+　　int hour = t.hour; // 0-23
+　　int minute = t.minute;
+　　int second = t.second;
+
+
+
+public class DataString {  
+    private static String mYear;  
+    private static String mMonth;  
+    private static String mDay;  
+    private static String mWay;  
+      
+    public static String StringData(){  
+        final Calendar c = Calendar.getInstance();  
+        c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));  
+        mYear = String.valueOf(c.get(Calendar.YEAR)); // 获取当前年份  
+        mMonth = String.valueOf(c.get(Calendar.MONTH) + 1);// 获取当前月份  
+        mDay = String.valueOf(c.get(Calendar.DAY_OF_MONTH));// 获取当前月份的日期号码  
+        mWay = String.valueOf(c.get(Calendar.DAY_OF_WEEK));  
+        if("1".equals(mWay)){  
+            mWay ="天";  
+        }else if("2".equals(mWay)){  
+            mWay ="一";  
+        }else if("3".equals(mWay)){  
+            mWay ="二";  
+        }else if("4".equals(mWay)){  
+            mWay ="三";  
+        }else if("5".equals(mWay)){  
+            mWay ="四";  
+        }else if("6".equals(mWay)){  
+            mWay ="五";  
+        }else if("7".equals(mWay)){  
+            mWay ="六";  
+        }  
+        return mYear + "年" + mMonth + "月" + mDay+"日"+"/星期"+mWay;  
+    }  
+      
+}
+
+2222222222222222222222222222
+    

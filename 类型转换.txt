@@ -1,0 +1,39 @@
+1、字符串转整形
+int i = Integer.parseInt([String]); 
+int i = Integer.parseInt([String],[int radix]);
+
+int i = Integer.valueOf(my_str).intValue(); 
+
+2、整形转字符串
+String s = String.valueOf(i);
+
+String s = Integer.toString(i); 
+
+String s = "" + i; 
+
+3、16进制 与浮点型
+       String s="3E1E9E9F";  
+        Float value = Float.intBitsToFloat(Integer.valueOf(s.trim(), 16));  
+         System.out.println(value);  
+
+
+
+	String mm="BF749BA6";
+        int tmp1=0,tmp2=0;
+        tmp1=Integer.parseInt(mm.substring(0,2),16);
+        tmp2+=tmp1*0x1000000;
+        tmp1=Integer.parseInt(mm.substring(2,4),16);
+        tmp2+=tmp1*0x10000;
+        tmp1=Integer.parseInt(mm.substring(4,6),16);
+        tmp2+=tmp1*0x100;
+        tmp1=Integer.parseInt(mm.substring(6,8),16);
+        tmp2+=tmp1;
+        Float tmpd= Float.intBitsToFloat(tmp2);
+        String tt=String.format("%.5f",tmpd);
+        TextView textView=(TextView)findViewById(R.id.tv1);
+        textView.setText(tt);
+
+          
+       Float f=0.15490197f;  
+        System.out.println(Integer.toHexString(Float.floatToIntBits(f)));  
+

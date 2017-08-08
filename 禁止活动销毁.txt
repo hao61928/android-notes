@@ -1,0 +1,11 @@
+点击返回键 当前活动不销毁直接返回上一个活动
+
+1、首先要设置你的activity为singleInstance。
+2、@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			moveTaskToBack(true);
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}

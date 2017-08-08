@@ -1,0 +1,47 @@
+package com.example.hero1_000.jiemian;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class MainActivity extends AppCompatActivity {
+
+
+    private ListView lv_teacher;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        lv_teacher = (ListView)findViewById(R.id.listview);
+
+        //给链表添加数据
+        List<Map<String, Object>> list=getData();
+        //适配器，刚刚重写的！
+        myadapter myAdapter = new myadapter(MainActivity.this, list);
+        //设置适配器
+        lv_teacher.setAdapter(myAdapter);
+
+
+    }
+
+    public List<Map<String, Object>> getData() {
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        for (int i = 0; i < 10; i++) {
+            Map<String, Object> map = new HashMap<String, Object>();
+            map.put("image", R.mipmap.ic_launcher);
+            map.put("teacher_name", "刘建华");
+            map.put("teacher_nickname", "最幽默老师");
+            map.put("university", "重庆邮电大学--外语学院");
+            list.add(map);
+        }
+        return list;
+    }
+
+
+
+}

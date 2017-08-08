@@ -1,0 +1,40 @@
+ private class SendReceiveAsyncTask extends AsyncTask<Void,String,Boolean>
+    {
+        Context mcontext;
+        int biaozhi;
+        String xuhao;
+        String wrong="";
+        List<String> shuzu=new ArrayList<String>();
+        public SendReceiveAsyncTask(Context ctx,int bz,String xuhao1)
+        {
+            mcontext=ctx;
+            biaozhi=bz;
+            xuhao=xuhao1;
+        }
+        //初始化
+        @Override
+        protected void onPreExecute()
+        {
+
+        }
+        //后台运行
+        @Override
+        protected Boolean doInBackground(Void...  params)
+        {
+            
+            return true;
+        }
+        //geng  xin  jin du
+        @Override
+        protected void onProgressUpdate(String ...values)
+        { 
+
+        }
+        //执行完毕
+        @Override
+        protected void onPostExecute(Boolean result)
+        {
+            
+            return;
+        }
+    }

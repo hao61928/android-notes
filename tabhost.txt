@@ -1,0 +1,16 @@
+ _tabHost = (TabHost) findViewById(R.id.tabhost);
+        _tabHost.setup();
+     _tabHost.addTab(_tabHost.newTabSpec("0")
+        .setIndicator("电量", getResources().getDrawable(android.R.drawable.star_off,null))
+        .setContent(R.id.tab1));
+        _tabHost.addTab(_tabHost.newTabSpec("1")
+                .setIndicator("瞬时量", getResources().getDrawable(android.R.drawable.ic_menu_call,null))
+                .setContent(R.id.tab2));
+        _tabHost.addTab(_tabHost.newTabSpec("2")
+                .setIndicator("误差", getResources().getDrawable(android.R.drawable.star_off,null))
+                .setContent(R.id.tab3));
+        _tabHost.addTab(_tabHost.newTabSpec("3")
+                .setIndicator("调表参数", ContextCompat.getDrawable(MainActivity.this,android.R.drawable.star_on))
+                .setContent(R.id.tab4));
+
+_tabHost.setCurrentTab(0);

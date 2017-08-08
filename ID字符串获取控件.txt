@@ -1,0 +1,14 @@
+int view_id = R.id.class.getField("xxx").getInt(null);
+
+View view = findViewById(view_id);
+
+或者：
+
+int view_id = getResources().getIdentifier("xxx", "id", "com.xxx.xxx");
+
+View view  = findViewById(view_id);
+
+
+
+
+其中xxx为view的id字符串，com.xxx.xxx为工程的包名

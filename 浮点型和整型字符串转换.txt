@@ -1,0 +1,19 @@
+		String mm="30004040";
+                int intbits = Float.floatToIntBits(3.00001144f);//
+                float tmpf=Float.intBitsToFloat(0x40400030);
+                wifibiaohao.setText(intbits+" "+tmpf);
+
+
+		tmps1=chubujiema.substring(224,232);
+		tmpi1=Integer.parseInt(tmps1.substring(0,2),16);
+		tmpi2=tmpi1*0x1000000;
+		tmpi1=Integer.parseInt(tmps1.substring(2,4),16);
+		tmpi2+=tmpi1*0x10000;
+		tmpi1=Integer.parseInt(tmps1.substring(4,6),16);
+		tmpi2+=tmpi1*0x100;
+		tmpi1=Integer.parseInt(tmps1.substring(6,8),16);
+		tmpi2+=tmpi1;
+		tmpd1= Float.intBitsToFloat(tmpi2);
+		if(tmpd1<0)tmpd1*=-1.0f;
+		tmps1=String.format("%.3f",tmpd1);
+		gonglvyinshu.setText(tmps1);

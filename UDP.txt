@@ -1,0 +1,28 @@
+ 		DatagramSocket socket=new DatagramSocket();
+                byte[] inBuff=new byte[1024];
+                DatagramPacket inPacket=new DatagramPacket(inBuff,inBuff.length);
+                DatagramPacket outPacket=null;
+                outPacket=new DatagramPacket(new byte[0],0,
+                        InetAddress.getByName(params[0]),30000);
+                byte[] buff={0x25,0x26};
+                outPacket.setData(buff);
+                socket.send(outPacket);
+                socket.receive(inPacket);
+                socket.close();
+                String linshi="";
+                for(int i=0;i<inPacket.getLength();i++)
+                {
+                    String hex="";
+                    try
+                    {
+                        hex = Integer.toHexString(inBuff[i] & 0xFF);
+                    }
+                    catch (NumberFormatException e)
+                    {
+                        return "";
+                    }
+                    if(hex.length()==1)hex="0"+hex;
+                    linshi+=hex;
+
+                }
+                return linshi;

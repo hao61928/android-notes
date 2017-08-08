@@ -1,0 +1,8 @@
+ // 设置全屏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        DisplayMetrics metric = new DisplayMetrics();
+        // 获取屏幕高度、宽度
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+        windowHeight = metric.heightPixels;  // 屏幕高度
+        windowWidth = metric.widthPixels;  // 屏幕宽度

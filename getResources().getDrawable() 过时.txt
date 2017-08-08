@@ -1,0 +1,24 @@
+Android中getResources().getDrawable() 过时的解决方法
+ 
+144  
+作者 码农仔  关注  
+ 2016.07.31 18:00 字数 99 阅读 900评论 0喜欢 13
+    
+
+
+最近在使用这个方法的时候总是在网上搜，感觉很麻烦，所以在这里记忆一下。
+
+1.当你这个Drawable不受主题影响时
+ResourcesCompat.getDrawable(getResources(), R.drawable.name, null);
+
+
+2.当你这个Drawable受当前Activity主题的影响时
+ContextCompat.getDrawable(getActivity(), R.drawable.name);
+
+
+3.当你这个Drawable想使用另外一个主题样式时
+ResourcesCompat.getDrawable(getResources(), R.drawable.name, anotherTheme);
+
+ 
+ Android  
+? 著作权归作者所有 
