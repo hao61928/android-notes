@@ -4,7 +4,6 @@
         int biaozhi;
         String xuhao;
         String wrong="";
-        List<String> shuzu=new ArrayList<String>();
         public SendReceiveAsyncTask(Context ctx,int bz,String xuhao1)
         {
             mcontext=ctx;
