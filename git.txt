@@ -1,3 +1,19 @@
 
 1.  主要原因是github中的README.md文件不在本地代码目录中
 git pull --rebase origin master
+2、公钥认证管理
+
+生成
+ssh-keygen -t rsa -C "xxxxx@xxxxx.com"  
+# Generating public/private rsa key pair...
+# 三次回车即可生成 ssh key
+
+查看你的 public key
+cat ~/.ssh/id_rsa.pub
+# ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6eNtGpNGwstc....
+
+测试是否成功
+ssh -T git@git.oschina.net
+若返回 Welcome to Git@OSC, yourname  则成功
+若 The authenticity of host 192.168.0.xxx can't be established. 则执行ssh  -o StrictHostKeyChecking=no  192.168.0.xxx
+

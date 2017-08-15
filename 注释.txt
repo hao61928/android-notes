@@ -1,0 +1,351 @@
+1.引言
+
+从JDK1.5开始，引入了注解类Annotation，Annotation其实是一种接口，可以作用于类、方法、属性等等 ，它可以通过反射机制来访问annotation信息，获取所加上注解信息，做相应的操作。相当于给相关的作用对象打上“tag”，使用方便，作用广泛。
+
+2.java.lang中的注解
+
+     在java.lang中，用到三种注解类，即常用到的Deprecated,Override和SuppressWarnings.
+
+     2.1 @Deprecated 过时
+
+     在使用Eclipse或AS编写程序过程中，有一些方法编写出来之后被画上了中划线，表示该方法已过时，建议使用新的一些方法代替。
+     如：viewPager.setOnPageChangeListener()方法在安卓API23中已过时，在源代码中的该方法上赫然多了一个注解@Deprecated，可使用addOnPageChangeListener()方法代替。
+     如果使用javac命令编译，会弹出：”注意：使用或覆盖了已过时的API“
+
+     2.2 @Override 复写
+
+     这是开发过程中最常遇到的注解了，表示复写父类中的方法。如果方法上有这条注解但没有重写父类方法，则会生成一条错误消息。这个注解有效地保证了方法一定会被复写。比如开发过程中，手动在子类中复写父类方法，只正确写出了方法名称，未写正确方法的参数，则相当于方法的重载，并不是复写。这种问题如果在功能上有错误产生，在检查过程中是很难找到的。使用@Override注解，有效地表明，此方法是复写父类的方法，不会产生手动的错误问题。
+
+     2.3 @SuppressWarnings 阻止警告
+
+     阻止了弹出的警告，比如屏蔽对上述过时的提示，可在调用setOnPageChangeListener()方法之上加上@SuppressWarnings("deprecation")，这样虽然在IDE中仍以中划线的形式表示，但如果使用javac命令就不再提示警告。
+
+3.元注解
+
+     那么以上的注解类的源码又是什么样的呢，打开Override发现其代码如下：
+
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.SOURCE)
+public @interface Override {
+}
+
+
+这里可以发现注解类的定义方法以及注解类上所加的注解——元注解。元注解有四个，位于java.lang.annotation包中：Documented，Inherited，Retention，Target
+
+     3.1@Target
+
+     表示注解作用的目标。
+
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.ANNOTATION_TYPE)
+public @interface Target {
+    ElementType[] value();
+}
+
+
+注解可以作用的目标由枚举类ElementType决定，可作用于类、方法、属性等，数组表示注解可以有多个作用域。
+
+public enum ElementType {
+    TYPE,// 类、接口、注解类型或枚举
+     FIELD, //属性
+     METHOD, //方法
+     PARAMETER,// 用于描述参数
+     CONSTRUCTOR,//构造方法
+      LOCAL_VARIABLE,//局部变量
+     ANNOTATION_TYPE,//注解类
+     PACKAGE //包
+}
+
+
+注解作用于类时，定义@Target(ElementType.TYPE)，ElementType .TYPE表示类型，Class,Interface等都实现了java中的Type接口，因此ElementType.TYPE 表示注解作用于这些"类"（并不是单纯的Class类）
+
+     3.2@Retention
+
+     表示注解的作用时段
+
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.ANNOTATION_TYPE)
+public @interface Retention {
+    RetentionPolicy value();
+}
+
+
+
+
+由此可见，Retention定义的是RetentionPolicy类型的数据，RetentionPolicy是一个枚举类型，包括SOURCE,CLASS,RUNTIME三个类型。表示注解保留的阶段。
+SOURCE：表示注解只在源文件中保留
+CLASS：表示注解保留到.class文件中
+RUNTIME：表示注解一直保留到内存中，类加载器把.class文件加载到内存中产生的字节码中要保留注解信息。
+ 可想而知，@Override仅在写代码时用到，其Retention中的值为RetentionPolicy.SOURCE，@SuppressWarnings也只是编译器使用的，保留到SOURCE阶段。而@Deprecated在内存中也需要保留，编译器需要得知方法是否过时，从加载到内存中的二进制文件中获取，因而要保留到RUNTIME阶段
+
+
+
+
+     3.3@Documented 
+
+     注解只是一个标记的话，那么使用javadoc生成文档时，这些注解都不会存在于文档中，要使注解在文档中也存在，就可以在使用了注解的作用对象上加上@Documented这个注解。javadoc所生成的文档就会带上注解信息。
+
+
+
+
+     3.4@Inherited
+
+     该注解表示子类可以集成加载父类上的注解。但要注意：
+
+     1.注解定义在类上面，子类是可以继承该注解
+
+     2.注解定义在方法上面，子类也可以继承该注解，但是如果子类复写了父类中定义了注解的方法，那么子类将无法继承该方法的注解，也就是说，子类在复写父类中被@Inherited标注的方法时，会将该方法上面的注解覆盖掉
+
+     3.Interface的实现类（implements实现）无法继承接口中所定义的被@Inherited标注的注解
+
+4.注解的参数
+
+在注解后为注解增加参数，如上述的@Retention、@Target后的括号中就是注解的参数。
+
+参数的类型，支持基本数据类型、String类型、Class类型、enum类型、Annotation类型以及上述所有类型的数组。
+
+当注解只有一个参数时，可以用value作为参数名称，在使用参数时，只用在括号中写参数的值而不用写参数名称。若存在多个参数时，需写上对应的参数名，并赋值，如@Subscribe(tag="xx")，若参数为数组类型，则需赋值形如：@Target({ElementType.TYPE,ElementType.METHOD})
+
+5.自定义注解
+
+     从上面的注解中，也大致看到了注解的定义方式。
+
+     1.使用@interface定义一个注解类，其内部自行继承了Annotation类。
+
+     2.在该类中定义注解的参数，定义方式很像方法。
+
+     3.注解元素必须有确定的值，要么在定义注解的默认值中指定，要么在使用注解时指定，非基本类型的注解元素的值不可为null。因此, 使用空字符串或0作为默认值是一种常用的做法。定义一些特殊的值，例如空字符串或者负数，表示某个元素不存在参数设置默认值时，后面跟上default即可设置默认值。
+
+     4.当注解的参数只有一个时，建议用value作为参数名，这样在使用注解时，可以直接写参数的值
+
+     接下来自定义一个注解类：
+
+@Documented
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Car{
+     String name() default "";
+     int number() default -1;
+}
+
+
+再定义一个类去使用这个注解：
+
+@Car(name="好车",number=666)
+public class CarBMW(){
+     
+}
+
+
+那么如何获取这些注解值呢？有如下的方法：
+
+if(CarBMW.class.isAnnotationPresent(Car.class)){//判断CarBMW类是否有注解类Car
+     Car carAnnotation=(Car)CarBMW.class.getAnnotation(Car.class);//获取注解实例对象
+     Log.v("Shawn",carAnnotation.name());//获取name参数的值
+     Log.v("Shawn",carAnnotation.number());//获取number参数的值
+}
+
+
+
+5.1 JAVA8中注解的补充
+在JAVA8中，增加了TypeAnnotation，在 Java 8 之前的版本中，只能允许在声明式前使用 Annotation。而在 Java 8 版本中，Annotation 可以被用在任何使用 Type 的地方，例如：初始化对象时 (new)，对象类型转化时。
+//初始化对象时
+String myString = new @NotNull String();
+//对象类型转化时
+myString = (@NonNull String) str;
+
+这点上有点类似Android中的注解使用。
+ 而ElementType中增加了俩个值ElementType.TYPE_PARAMETER和ElementType.TYPE_USE 正是为此功能实现而产生的。
+ElementType.TYPE_PARAMETER 表示这个 Annotation 可以用在 Type 的声明式前，而 ElementType.TYPE_USE 表示这个 Annotation 可以用在所有使用 Type 的地方（如：泛型，类型转换等）。
+Type Annotation 也可以通过设置 Retention 在编译后保留在 class 文件中（RetentionPolicy.CLASS）或者运行时可访问（RetentionPolicy.RUNTIME）。但是与之前不同的是，Type Annotation 有两个新的特性：在本地变量上的 Annotation 可以保留在 class 文件中，以及泛型类型可以被保留甚至在运行时被访问。
+ 此外，JAVA8中还增加了一个特性RepeatingAnnotation，允许为同一个声明式或者类型加上相同的 Annotation。
+ 例如：一个类可以被两个人使用：
+@Worker(role="XiaoMing")
+@Worker(role="XiaoHong")
+public class Person {
+     ...
+}
+
+需要需要重复标注特性的 Annotation 前加上 @Repeatable 标签：
+@Repeatable(Workers.class)
+public @interface Worker{
+    String role();
+}
+
+ @Repeatable 标签后括号中的值即为指定的 Container Annotation 的类型。在这个例子中，Container Annotation 的类型是 Workers，Java 编译器会把重复的 Worker 对象保存在 Workers中。
+Workers中必须定义返回数组类型的value()方法。数组中元素的类型必须为对应的 Repeating Annotation 类型。具体示例如下：
+public @interface Workers{
+    Worker[] value();
+}
+
+获取注解的方法有两种： 
+
+一种方式是用过 上述的的 getAnnotations(Class<T>) 方法一次性返回 Repeating Annotation。
+
+另一种方式是通过 AnnotatedElement 接口的 getAnnotationByType(Class<T>) 首先获得 Container Annotation，然后再通过 Container Annotation 的 value 方法获得 Repeating Annotation。
+
+
+
+Workers workers= Person.class.getAnnotation(Workers.class);
+Worker[] workers2= Person.class.getAnnotationsByType(Worker.class);
+以上关于JAVA8中的注解参考http://www.ibm.com/developerworks/cn/java/j-lo-java8annotation/index.html 
+
+6.Android中的注解
+
+6.1两个常见的注解
+
+Android从API16引入了annotation包，包括两个注解@TargetApi和@SuppressLint
+
+@TargetApi (Build.VERSION_CODES.XX)用于屏蔽某一新api中才能使用的方法报的lint检查出现的错误。
+
+@SuppressLint("NewApi") 屏蔽一切新api中才能使用的方法报的android lint错误
+
+
+
+
+当然，这两个注解的作用仅仅是屏蔽lint错误，在方法中还要判断版本做不同的操作，比如：
+
+ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.XX) {
+     //高于XX版本进行的操作
+ } else {
+     //低于XX版本进行的操作
+ }
+
+6.2Android中用到的注解
+
+API19引入了很多注解，起初是以jar包形式引入的，放在SDK目录下sdk\extras\android\m2repository\com\android\support\support-annotations\
+
+在API21之后，直接放入了annotation包中
+
+Android中的注解分为八类，在API23中有42个注解类
+
+
+
+
+6.2.1 @CallSuper
+
+     要求方法必须调用父类方法，可想而知，Activity的onCreate()方法有此注解标识。
+
+6.2.2 @NonNull和@Nullable     
+
+     定义一个变量或对象可以为空或不可为空，用在方法上表示方法可否返回空。
+
+6.2.3 资源类注解
+
+     @AnimatorRes,@AnimRes,@AnyRes,@ArrayRes,@AttrRes,@ BoolRes,@ ColorRes,@ DimensRes,@ DrawableRes,@ FractionRes,@ IdRes,@ IntegerRes,@ InterpolatorRes,@ LayoutRes,@ MenuRes,@ PluralsRes,@ RawRes,@ StringRes,@ StyleableRes,@StyleRes,@ TransitionRes,@ XmlRes
+
+这部分注解是非常有实用性的，有22个，用法如：
+
+getDrawable(@DrawableRes int id)  //getDrawable方法限定了传入的参数必须是Drawable资源文件
+
+另外还有个@ColorInt，限制传入Hex颜色值。
+
+在开发过程中需要传入某种资源文件时，用此类注解，是很有限制作用的做法。
+
+6.2.4@IdDef和@StringDef
+
+提到最常用的Toast，在API21之前，一般可以这么写
+
+Toast.makeText(context, "msg", 0).show();
+
+但是21之后，0突然被划红线了，查看源码发现，之前是这么写的：
+
+public static final int LENGTH_SHORT = 0;
+public static final int LENGTH_LONG = 1;
+
+
+makeText方法中单纯地写着int duration参数，而21之后，成了这样：
+
+@IntDef({LENGTH_SHORT, LENGTH_LONG})
+@Retention(RetentionPolicy.SOURCE)
+public @interface Duration {}
+
+
+在makeText的duration参数之前加上了注解@Duration，这就要求传入Duration中的值才不会报警告。
+
+可以想象，@IntDef和@String Def中放入了一个value数组。
+
+在开发中，这两个注解就可以用来限制枚举值了。
+
+
+
+
+6.2.5 范围约束@FloatRange、@IntRange和@Size
+
+前两个限制了数字的范围，比如可以用来限制传入参数值的范围，
+
+@Size可以用来限定集合的大小或者限定字符串的长度，还可以做其他限制：
+
+1.限制最小最大数量：@Size(min=1,max=10 )
+
+2.数量必须是2的倍数（偶数）: @Size(multiple=2)
+
+
+
+
+6.2.6 进程类注解
+
+@UiThread,@BinderThread,@MainThread,@WorkerThread
+
+用来限定方法或类在指定的线程类型中被调用，比如 AsyncTask中的方法就有如下的限定：@WorkerThread
+protected abstract Result doInBackground(Params... params){
+     //doInBackground
+}
+@MainThread
+protected void onProgressUpdate(Progress... values) {
+     //onProgressUpdate
+}
+
+6.2.7@CheckResult
+
+该注解意味着需要对方法的返回值进行处理，例如：有个方法为
+
+@CheckResult
+public boolean checkValid(String value){
+     return TextUtils.isEmpty(value);
+}
+
+
+当调用者直接调用checkValid("abc");时会报错，这意味着，需要对方法的返回值进行处理，无论返回true或false，需要进行后续操作，不能单单调用一句checkValid("abc");
+
+
+
+
+6.2.8 权限注解@RequiresPermission
+
+如果方法的调用需要权限，可以加这个注解，当需要几个权限中的一个时，使用anyOf，如 @RequiresPermission(anyOf = { Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION})
+
+若需要多个权限，使用allOf，如 @RequiresPermission(allOf = { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
+
+
+若需要单独的标注读和写的权限访问，所以可以用@Read或者@Write标注每一个权限需求
+
+6.2.9 @SdkConstant
+
+表示一个常量字段应该被输出在SDK工具中使用，例如：
+
+添加一个自定义的Action：
+
+@SdkConstant(SdkConstantType.ACTIVITY_INTENT_ACTION) 
+public static final String ACTION_MY_TEST = "android.intent.action.MY_TEST"; 
+
+
+则可以这样使用：
+
+Intent myTest = new Intent(Intent.ACTION_MY_TEST); 
+mContext.sendBroadcast(myTest);
+
+6.2.10@Widget
+
+用于类的注解，表示该类是自定义的Widget类
+
+
+
+
+此外还有两个注解即上述的@TargetApi和@SuppressLint不再赘述。
+
+7.总结
+
+综上，注解部分就介绍完了。注解在开发过程中有很强的实用性，使用注解可以明确开发过程中的一些数据类型，还可以对一些数据进行限制，从而提高开发效率。
