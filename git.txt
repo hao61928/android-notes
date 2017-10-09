@@ -23,3 +23,17 @@ git add *controller #将所有以controller结尾的文件修改添加到暂存区
 git add hello*   #将所有以hello开头的文件修改添加到暂存区 hello.txt  helloaaa.txt hellott.java等
 
 
+3 查看当前的远程库
+$ git remote
+origin
+$ git remote -v
+origin    git@github.com:tianqixin/runoob-git-test.git (fetch)
+origin    git@github.com:tianqixin/runoob-git-test.git (push)
+
+4 推送到远程仓库
+git push [alias] [branch]
+以上命令将你的 [branch] 分支推送成为 [alias] 远程仓库上的 [branch] 分支，实例如下。
+
+5 删除远程仓库
+删除远程仓库你可以使用命令：
+git remote rm [别名]
