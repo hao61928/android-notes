@@ -17,3 +17,9 @@ ssh -T git@git.oschina.net
 若返回 Welcome to Git@OSC, yourname  则成功
 若 The authenticity of host 192.168.0.xxx can't be established. 则执行ssh  -o StrictHostKeyChecking=no  192.168.0.xxx
 
+2、add
+git add .   #将所有改动添加到暂存区
+git add *controller #将所有以controller结尾的文件修改添加到暂存区
+git add hello*   #将所有以hello开头的文件修改添加到暂存区 hello.txt  helloaaa.txt hellott.java等
+
+

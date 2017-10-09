@@ -1,0 +1,37 @@
+layout_constraintTop_toTopOf       // 将所需视图的顶部与另一个视图的顶部对齐。 
+
+layout_constraintTop_toBottomOf    // 将所需视图的顶部与另一个视图的底部对齐。 
+
+layout_constraintBottom_toTopOf    // 将所需视图的底部与另一个视图的顶部对齐。 
+
+layout_constraintBottom_toBottomOf // 将所需视图的底部与另一个视图的底部对齐。 
+
+layout_constraintLeft_toTopOf      // 将所需视图的左侧与另一个视图的顶部对齐。 
+
+layout_constraintLeft_toBottomOf   // 将所需视图的左侧与另一个视图的底部对齐。 
+
+layout_constraintLeft_toLeftOf     // 将所需视图的左边与另一个视图的左边对齐。 
+
+layout_constraintLeft_toRightOf    // 将所需视图的左边与另一个视图的右边对齐。 
+
+layout_constraintRight_toTopOf     // 将所需视图的右对齐到另一个视图的顶部。
+
+layout_constraintRight_toBottomOf  // 将所需视图的右对齐到另一个的底部。
+
+layout_constraintRight_toLeftOf    // 将所需视图的右边与另一个视图的左边对齐。
+
+layout_constraintRight_toRightOf   // 将所需视图的右边与另一个视图的右边对齐
+
+////////////////////////////////////////////////////////////////////////////////////
+layout_constraintDimensionRatio   //这个属性就是把一个View的尺寸设为特定的宽高比，比如设置一张图片的宽高比为 1：1，4：3， 16：9 等
+
+//////////////////////////////////////////////////////////////////
+偏移比例
+layout_constraintHorizontal_bias  //控件的水平偏移比例
+
+layout_constraintVertical_bias   //控件的垂直偏移比例
+///////////////////////////////////////////////////////
+基线约束控键
+
+该控键帮助你对齐任意两个widget的文字部分，与widget的大小无关。例如你有两个不同尺寸的widget但是你想要他们的文字部分对齐
+layout_constraintBaseline_toBaselineOf
