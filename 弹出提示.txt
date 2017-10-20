@@ -12,3 +12,24 @@ Toast.makeText(this, "未连接电表", Toast.LENGTH_SHORT).show();
 					Looper.loop();
 				}
 			},50);
+			
+			
+防止手抖弹出多次重复的toast
+
+public class Util {
+
+    private static Toast toast;
+
+    public static void showToast(Context context, 
+        String content) {
+        if (toast == null) {
+            toast = Toast.makeText(context,
+                         content, 
+                         Toast.LENGTH_SHORT);
+        } else {
+            toast.setText(content);
+        }
+        toast.show();
+    }
+
+}
