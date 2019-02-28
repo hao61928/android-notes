@@ -62,6 +62,9 @@ adb logcat Tag:v *:S | tee my.log
 
 adb logcat | grep MyApp
 
-
+复制文件到当前目录下
+.\adb pull sdcard/Android/obb/com.xunlei.downloadprovider/ThunderDownload/
+复制到指定目录下
+.\adb pull sdcard/Android/contacts_db_log.txt D:/VS/
 
 
